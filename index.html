@@ -78,22 +78,47 @@
   <script>
     const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbwE8R2AOG4IgYDT3CiJIFi48hU7qE4IU16FyCyGSr3k5hj-BKf4vmxAID3kidrNUxMo/exec";
     
-    var url = document.location.href;
-    var k = url.substr(url.lastIndexOf("k=")+2);
-    
-    if(k){
-      fetch(AS_URL_BASE+'?k='+k)
-      .then(r => r.text())
-      .then((r) => {
-        console.log(r);
-        //document.write(r);
-        if(r){
-          document.location.replace(r);
-        }
-      })
-      .catch(err => console.log(err))
+    // Función para obtener parámetros de la URL
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+      const results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
+    // Obtiene el parámetro 'K' de la URL de esta página
+    const key = getParameterByName('K');
+
+    if (key) {
+      // Construye la URL completa para el App Script
+      const fullUrl = `${APP_SCRIPT_URL}?K=${key}`;
+
+      // Realiza la petición
+      fetch(fullUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error en la petición: ' + response.statusText);
+          }
+          return response.text();
+        })
+        .then(text => {
+          // Si se recibe una URL, redirige
+          if (text.startsWith('http://') || text.startsWith('https://')) {
+            document.location.replace(text);
+          } else {
+            // Muestra un mensaje de error si no es una URL
+            document.body.innerHTML = `<h1>Error: ${text}</h1><p>No se encontró la URL de destino para la clave '${key}'.</p>`;
+          }
+        })
+        .catch(error => {
+          document.body.innerHTML = `<h1>Error de conexión</h1><p>${error.message}</p>`;
+        });
+    } else {
+        // Muestra un mensaje si falta el parámetro 'K'
+        document.body.innerHTML = `<h1>Error</h1><p>Falta el parámetro 'K' en la URL.</p>`;
+    }
   </script>
 
 </body>
