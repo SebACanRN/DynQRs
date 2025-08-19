@@ -89,11 +89,11 @@
     }
 
     // Obtiene el parámetro 'K' de la URL de esta página
-    const key = getParameterByName('K');
+    const key = getParameterByName('k');
 
     if (key) {
       // Construye la URL completa para el App Script
-      const fullUrl = `${APP_SCRIPT_URL}?K=${key}`;
+      const fullUrl = `${APP_SCRIPT_URL}?k=${key}`;
 
       // Realiza la petición
       fetch(fullUrl)
