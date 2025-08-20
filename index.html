@@ -8,7 +8,6 @@
         background-color: lightblue;
         text-align: center;
       }
-      
       .lds-heart,
       .lds-heart div,
       .lds-heart div:after,
@@ -18,8 +17,8 @@
       .lds-heart {
         display: inline-block;
         position: relative;
-        width: 80px;
-        height: 80px;
+        width: 180px;
+        height: 180px;
         transform: rotate(45deg);
         transform-origin: 40px 40px;
       }
@@ -71,52 +70,45 @@
       }
   </style>
 </head>
-<body>
-    
+<body>  
   <div class="lds-heart"><div></div></div>
-  
   <script>
-        // Reemplaza 'TU_URL_DEL_SCRIPT' con la URL de tu aplicación web de Google Apps Script.
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbw8KGGw7fkRFIf6XEnjA6BOzM9FUQGgn57B0BMCuA9BGMqPLDCc3DK1GtVsw3PjYp96/exec';
-
-        function getParameterByName(name, url = window.location.href) {
-            name = name.replace(/[\[\]]/g, '\\$&');
-            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-            const results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
-
-        const keyParam = getParameterByName('K');
-
-        if (keyParam) {
-            const finalUrl = `${scriptUrl}?K=${keyParam}`;
-            
-            fetch(finalUrl)
-                .then(response => {
-                    // Si el script de Google App Script responde correctamente
-                    if (response.ok) {
-                        return response.text();
-                    }
-                    throw new Error('Error en la respuesta del servidor.');
-                })
-                .then(url => {
-                    // Redirigir a la URL recibida
-                    if (url && url.startsWith('http')) {
-                        document.location.replace(url);
-                    } else {
-                        // En caso de error, mostrar un mensaje.
-                        document.body.innerHTML = '<h1>Error: URL de destino no válida.</h1>';
-                    }
-                })
-                .catch(error => {
-                    document.body.innerHTML = `<h1>Error: ${error.message}</h1>`;
-                });
-        } else {
-            document.body.innerHTML = '<h1>Error: No se encontró el parámetro K en la URL.</h1>';
-        }
-    </script>
-
+    // Reemplaza 'TU_URL_DEL_SCRIPT' con la URL de tu aplicación web de Google Apps Script.
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbw0BlRIJDriZhg6jrdawO5KDYMMsAZsAjHJbxBnEIOj8GAxWvYPjWiCRL2RKJ1UyQLk/exec';
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+      const results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    const keyParam = getParameterByName('K');
+    if (keyParam) {
+      const finalUrl = `${scriptUrl}?K=${keyParam}`;
+      fetch(finalUrl)
+        .then(response => {
+          // Si el script de Google App Script responde correctamente
+          if (response.ok) {
+            return response.text();
+          }
+          throw new Error('Error en la respuesta del servidor.');
+        })
+        .then(url => {
+          // Redirigir a la URL recibida
+          if (url && url.startsWith('http')) {
+            document.location.replace(url);
+          } else {
+            // En caso de error, mostrar un mensaje.
+            document.body.innerHTML = '<h1>Error: URL de destino no válida.</h1>';
+          }
+        })
+        .catch(error => {
+          document.body.innerHTML = `<h1>Error: ${error.message}</h1>`;
+        });
+    } else {
+      document.body.innerHTML = '<h1>Error: No se encontró el parámetro K en la URL.</h1>';
+    }
+  </script>
 </body>
 </html>
